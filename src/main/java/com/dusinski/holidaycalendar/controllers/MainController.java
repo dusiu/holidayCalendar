@@ -1,10 +1,10 @@
-
 package com.dusinski.holidaycalendar.controllers;
 
 import com.dusinski.holidaycalendar.entities.User;
 import com.dusinski.holidaycalendar.service.CalendarEventRepository;
 import com.dusinski.holidaycalendar.service.UserRepository;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +17,16 @@ public class MainController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CalendarEventRepository calendarEventRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @GetMapping(path = "/")
+    public String calendarForm(Model model) throws JsonProcessingException {
+        model.addAttribute("events", objectMapper.writeValueAsString(calendarEventRepository.findAll()));
+        return "full-height";
+    }
 
     @RequestMapping(path = "/add") // Map ONLY POST Requests
     public @ResponseBody
@@ -56,39 +63,8 @@ public class MainController {
 
     @PostMapping("/greeting")
     public String greetingSubmit(@ModelAttribute User user, Model model) {
-    model.addAttribute("user", user);
+        model.addAttribute("user", user);
         userRepository.save(user);
-    return "result";
-    }
-
-    @GetMapping(path="/")
-    public String calendarForm( Model model) {
-
-//calendarEventRepository.findByStart("2020-08-07")
-
-//        String json =Gson.toJson("test string");
-
-        Gson gson = new Gson();
-        String test_string = new String();
-
-//        test_string = gson.toJson(calendarEventRepository.findByStart("2020-08-07"));
-
-        test_string=calendarEventRepository.findByStart("2020-08-07").toString();
-        System.out.println("test_staring before: "+ test_string);
-
-        test_string=test_string.replace(", Event id = ","},{");
-        test_string=test_string.replace("Event id = ","{");
-        test_string=test_string.replace("[","");
-        test_string=test_string.replace("]","");
-        test_string=test_string.replace("=",":");
-        test_string=test_string+"}";
-
-        System.out.println("test_staring after: "+ test_string);
-
-        model.addAttribute("eventString", test_string);
-        model.addAttribute("eventList", calendarEventRepository.findByStart("2020-08-07"));
-
-        return "full-height";
-
+        return "result";
     }
 }
