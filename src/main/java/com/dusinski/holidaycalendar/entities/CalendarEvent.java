@@ -50,7 +50,7 @@ public class CalendarEvent {
     }
 
     public void setEventName(String eventName) {
-        this.eventName = eventName;
+        this.eventName = "'"+eventName+"'";
     }
     public String getStart() {
         return start;

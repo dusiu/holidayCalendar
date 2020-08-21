@@ -4,6 +4,7 @@ package com.dusinski.holidaycalendar.controllers;
 import com.dusinski.holidaycalendar.entities.User;
 import com.dusinski.holidaycalendar.service.CalendarEventRepository;
 import com.dusinski.holidaycalendar.service.UserRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +68,27 @@ public class MainController {
 
 //        String json =Gson.toJson("test string");
 
-        model.addAttribute("eventList", "Dominik");
+        Gson gson = new Gson();
+        String test_string = new String();
+
+//        test_string = gson.toJson(calendarEventRepository.findByStart("2020-08-07"));
+
+        test_string=calendarEventRepository.findByStart("2020-08-07").toString();
+        System.out.println("test_staring before: "+ test_string);
+
+        test_string=test_string.replace(", Event id = ","},{");
+        test_string=test_string.replace("Event id = ","{");
+        test_string=test_string.replace("[","");
+        test_string=test_string.replace("]","");
+        test_string=test_string.replace("=",":");
+        test_string=test_string+"}";
+
+        System.out.println("test_staring after: "+ test_string);
+
+        model.addAttribute("eventString", test_string);
+        model.addAttribute("eventList", calendarEventRepository.findByStart("2020-08-07"));
+
         return "full-height";
+
     }
 }
