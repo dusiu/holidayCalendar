@@ -2,70 +2,71 @@
 
 package com.dusinski.holidaycalendar.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 public class CalendarEvent {
 
 
     @Id
+    @JsonProperty("id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer groupId;
+    private long id;
 
 
-
+    @JsonProperty("title")
     private String eventName;
-    private String start;
-    private String end;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     public CalendarEvent() {
 //        this.email="test_name";
 //        this.email="test_email";
     }
 
-    public CalendarEvent(String eventName, String start, String end) {
-        this.eventName=eventName;
+    public CalendarEvent(String eventName, LocalDateTime start, LocalDateTime end) {
+        this.eventName = eventName;
         this.start = start;
         this.end = end;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Event id = [groupId=%d], start='%s', end='%s'", groupId, start, end);
-
+    public long getId() {
+        return this.id;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
     public String getEventName() {
         return eventName;
     }
 
     public void setEventName(String eventName) {
-        this.eventName = "'"+eventName+"'";
+        this.eventName = eventName;
     }
-    public String getStart() {
+
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
+
 
 }

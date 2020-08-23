@@ -4,11 +4,14 @@ package com.dusinski.holidaycalendar.controllers;
 import com.dusinski.holidaycalendar.entities.User;
 import com.dusinski.holidaycalendar.service.CalendarEventRepository;
 import com.dusinski.holidaycalendar.service.UserRepository;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 
 @Controller
@@ -20,6 +23,9 @@ public class MainController {
 
     @Autowired
     private CalendarEventRepository calendarEventRepository;
+
+    @Autowired
+    private ObjectMapper objectMapperCalendar = new ObjectMapper();
 
     @RequestMapping(path = "/add") // Map ONLY POST Requests
     public @ResponseBody
@@ -62,31 +68,12 @@ public class MainController {
     }
 
     @GetMapping(path="/")
-    public String calendarForm( Model model) {
+    public String calendarForm( Model model) throws JsonProcessingException {
 
-//calendarEventRepository.findByStart("2020-08-07")
+        LocalDateTime testTime=  LocalDateTime.of(2020,8,21,0,0);
 
-//        String json =Gson.toJson("test string");
-
-        Gson gson = new Gson();
-        String test_string = new String();
-
-//        test_string = gson.toJson(calendarEventRepository.findByStart("2020-08-07"));
-
-        test_string=calendarEventRepository.findByStart("2020-08-07").toString();
-        System.out.println("test_staring before: "+ test_string);
-
-        test_string=test_string.replace(", Event id = ","},{");
-        test_string=test_string.replace("Event id = ","{");
-        test_string=test_string.replace("[","");
-        test_string=test_string.replace("]","");
-        test_string=test_string.replace("=",":");
-        test_string=test_string+"}";
-
-        System.out.println("test_staring after: "+ test_string);
-
-        model.addAttribute("eventString", test_string);
-        model.addAttribute("eventList", calendarEventRepository.findByStart("2020-08-07"));
+        model.addAttribute("eventList",
+                objectMapperCalendar.writeValueAsString(calendarEventRepository.findByStart(testTime)));
 
         return "full-height";
 

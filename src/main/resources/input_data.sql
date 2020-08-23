@@ -1,2 +1,2 @@
-insert into Calendar_Event(group_Id,event_Name, start, end) values (default ,'event1','2020-08-07','2020-08-08');
-insert into Calendar_Event(group_Id,event_Name, start, end) values (default,'event1', '2020-08-12','2020-08-13');
+insert into Calendar_Event(id,event_Name, start, end) values (default ,'event1','2020-08-21','2020-08-23');
+insert into Calendar_Event(id,event_Name, start, end) values (default,'event1', '2020-08-21','2020-08-25');
