@@ -75,7 +75,13 @@ public class MainController {
         model.addAttribute("eventList",
                 objectMapperCalendar.writeValueAsString(calendarEventRepository.findByStart(testTime)));
 
-        return "full-height";
+        return "index";
 
+    }
+
+    @GetMapping(path="/show")
+    public String addEventForm(Model model){
+            model.addAttribute("eventListByUser", calendarEventRepository.findByUserId(1));
+        return "showEvents";
     }
 }

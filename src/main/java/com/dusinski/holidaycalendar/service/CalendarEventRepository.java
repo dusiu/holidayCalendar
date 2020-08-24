@@ -9,5 +9,7 @@ import java.util.List;
 
 public  interface CalendarEventRepository extends CrudRepository<CalendarEvent, Long> {
     List<CalendarEvent> findByStart(LocalDateTime start);
+    List<CalendarEvent> findByUserId(long userId);
     CalendarEvent findById(long groupId);
+
 }

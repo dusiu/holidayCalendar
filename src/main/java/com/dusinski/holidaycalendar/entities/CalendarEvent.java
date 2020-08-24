@@ -25,6 +25,9 @@ public class CalendarEvent {
     private LocalDateTime start;
     private LocalDateTime end;
 
+
+    private long userId;
+
     public CalendarEvent() {
 //        this.email="test_name";
 //        this.email="test_email";
@@ -66,6 +69,14 @@ public class CalendarEvent {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
 
