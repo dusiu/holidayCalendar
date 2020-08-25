@@ -3,14 +3,21 @@
 package com.dusinski.holidaycalendar.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
+
 @Entity
+@CheckStartEndDate
 public class CalendarEvent {
 
 
@@ -21,23 +28,31 @@ public class CalendarEvent {
 
 
     @JsonProperty("title")
-    private String eventName;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    @NotBlank(message="Event title may not be null")
+    private String title;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "May not be null")
+    private LocalDate start;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "May not be null")
+    private LocalDate  end;
 
 
     private long userId;
 
-    public CalendarEvent() {
+//    public CalendarEvent() {
 //        this.email="test_name";
 //        this.email="test_email";
-    }
+//    }
 
-    public CalendarEvent(String eventName, LocalDateTime start, LocalDateTime end) {
-        this.eventName = eventName;
-        this.start = start;
-        this.end = end;
-    }
+//    @ConsistentDateParameters
+//    public CalendarEvent(String title, LocalDate start, LocalDate end) {
+//        this.title = title;
+//        this.start = start;
+//        this.end = end;
+//    }
 
     public long getId() {
         return this.id;
@@ -47,27 +62,27 @@ public class CalendarEvent {
         this.id = id;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setTitle(String eventName) {
+        this.title = eventName;
     }
 
-    public LocalDateTime getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 
@@ -79,5 +94,9 @@ public class CalendarEvent {
         this.userId = userId;
     }
 
+    public boolean isStartBeforeEnd(){
+
+        return start.isBefore(end);
+    }
 
 }

@@ -1,6 +1,7 @@
 
 package com.dusinski.holidaycalendar.controllers;
 
+import com.dusinski.holidaycalendar.entities.CalendarEvent;
 import com.dusinski.holidaycalendar.entities.User;
 import com.dusinski.holidaycalendar.service.CalendarEventRepository;
 import com.dusinski.holidaycalendar.service.UserRepository;
@@ -9,13 +10,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 @Controller
-@RequestMapping(path = "/demo")
+@RequestMapping
 public class MainController {
 
     @Autowired
@@ -70,10 +74,11 @@ public class MainController {
     @GetMapping(path="/")
     public String calendarForm( Model model) throws JsonProcessingException {
 
-        LocalDateTime testTime=  LocalDateTime.of(2020,8,21,0,0);
+//        LocalDateTime testTime=  LocalDateTime.of(2020,8,21,0,0);
 
+        LocalDate testTime = LocalDate.parse("2020-01-04");
         model.addAttribute("eventList",
-                objectMapperCalendar.writeValueAsString(calendarEventRepository.findByStart(testTime)));
+                objectMapperCalendar.writeValueAsString(calendarEventRepository.findByUserId(1)));
 
         return "index";
 
@@ -83,5 +88,27 @@ public class MainController {
     public String addEventForm(Model model){
             model.addAttribute("eventListByUser", calendarEventRepository.findByUserId(1));
         return "showEvents";
+    }
+
+    @RequestMapping(value="/delete/{eventId}")
+    public String deleteCalendarEvent(@PathVariable long eventId){
+        calendarEventRepository.deleteById(eventId);
+        return "redirect:/show";
+    }
+
+    @GetMapping(path="/addEvent")
+    public String showAddEventForm(CalendarEvent calendarEvent){
+        return "addEventForm";
+    }
+
+    @PostMapping(path="/addEvent")
+    public String checkEvent(@Valid CalendarEvent calendarEvent, BindingResult result){
+        if (result.hasErrors()){
+            return "addEventForm";
+        }
+        calendarEvent.setUserId(1);
+        calendarEventRepository.save(calendarEvent);
+        //model.addAttribute("calendarEvent", calendarEventRepository.findByUserId(1));
+        return "redirect:/show";
     }
 }
