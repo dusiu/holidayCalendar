@@ -2,12 +2,16 @@
 package com.dusinski.holidaycalendar.controllers;
 
 import com.dusinski.holidaycalendar.entities.CalendarEvent;
+import com.dusinski.holidaycalendar.entities.EventConfirmationToken;
 import com.dusinski.holidaycalendar.entities.User;
 import com.dusinski.holidaycalendar.service.CalendarEventRepository;
+import com.dusinski.holidaycalendar.service.EmailSenderService;
+import com.dusinski.holidaycalendar.service.EventConfirmationTokenRepository;
 import com.dusinski.holidaycalendar.service.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +34,12 @@ public class MainController {
 
     @Autowired
     private ObjectMapper objectMapperCalendar = new ObjectMapper();
+
+    @Autowired
+    private EventConfirmationTokenRepository eventConfirmationTokenRepository;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @RequestMapping(path = "/add") // Map ONLY POST Requests
     public @ResponseBody
@@ -108,7 +118,46 @@ public class MainController {
         }
         calendarEvent.setUserId(1);
         calendarEventRepository.save(calendarEvent);
+
+        EventConfirmationToken eventConfirmationToken = new EventConfirmationToken(calendarEvent);
+        eventConfirmationTokenRepository.save(eventConfirmationToken);
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo("dominik.dusinski@orbium.com");
+        mailMessage.setSubject("Complete Registration of the Holiday Event");
+        mailMessage.setFrom("confirmationholiday@gmail.com");
+        mailMessage.setText("To confirm your event, please click here : "
+        + "http://localhost:8090/confirm-account?token="+eventConfirmationToken.getEventConfirmationToken()
+        );
+
+        emailSenderService.sendEmail(mailMessage);
+
         //model.addAttribute("calendarEvent", calendarEventRepository.findByUserId(1));
         return "redirect:/show";
     }
+
+
+    @RequestMapping(value="/confirm-account", method={RequestMethod.GET, RequestMethod.POST})
+    public String confirmEvent(Model model, @RequestParam("token") String confirmationToken){
+        EventConfirmationToken token = eventConfirmationTokenRepository.findByEventConfirmationToken(confirmationToken);
+
+        if (token!= null)
+        {
+            CalendarEvent calendarEvent = calendarEventRepository.findById(token.getCalendarEvent().getEventId());
+            System.out.println("Calendar event Id:"+calendarEvent.getEventId());
+            System.out.println("before token:"+calendarEvent.isEnabled());
+            calendarEvent.setEnabled(true);
+            System.out.println("after token:"+calendarEvent.isEnabled());
+            calendarEventRepository.save(calendarEvent);
+            return "accountVerified";
+
+        }
+        else
+        {
+            return "verificationError";
+
+        }
+
+    }
+
 }

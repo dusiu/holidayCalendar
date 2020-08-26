@@ -60,16 +60,19 @@
                 <th scope="col">start</th>
                 <th scope="col">end</th>
                 <th scope="col">user id</th>
+                <th scope="col">is verified</th>
+                <th scope="col">Click to delete</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="calendarEvent : ${eventListByUser}">
-                <td scope="row" th:text="${calendarEvent.id}"></td>
+                <td scope="row" th:text="${calendarEvent.eventId}"></td>
                 <td th:text="${calendarEvent.title}"></td>
                 <td th:text="${calendarEvent.start}"></td>
                 <td th:text="${calendarEvent.end}"></td>
                 <td th:text="${calendarEvent.userId}"></td>
-                <td><a th:href="@{/delete/{id}(id=${calendarEvent.id})}" class="btn btn-danger" onclick="return confirm('Are you sure to delete HolidayEvent?')">Delete Event</a> </td>
+                <td th:text="${calendarEvent.enabled}"></td>
+                <td><a th:href="@{/delete/{id}(id=${calendarEvent.eventId})}" class="btn btn-danger" onclick="return confirm('Are you sure to delete HolidayEvent?')">Delete Event</a> </td>
             </tr>
             </tbody>
         </table>

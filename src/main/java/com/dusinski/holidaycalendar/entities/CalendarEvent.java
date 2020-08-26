@@ -12,8 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 
 
 @Entity
@@ -22,9 +20,9 @@ public class CalendarEvent {
 
 
     @Id
-    @JsonProperty("id")
+    @JsonProperty("event_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long eventId;
 
 
     @JsonProperty("title")
@@ -39,8 +37,9 @@ public class CalendarEvent {
     @NotNull(message = "May not be null")
     private LocalDate  end;
 
-
     private long userId;
+
+    private boolean isEnabled;
 
 //    public CalendarEvent() {
 //        this.email="test_name";
@@ -54,12 +53,12 @@ public class CalendarEvent {
 //        this.end = end;
 //    }
 
-    public long getId() {
-        return this.id;
+    public long getEventId() {
+        return this.eventId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEventId(long id) {
+        this.eventId = id;
     }
 
     public String getTitle() {
@@ -93,6 +92,15 @@ public class CalendarEvent {
     public void setUserId(long userId) {
         this.userId = userId;
     }
+
+    public boolean isEnabled() {
+        return this.isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
 
     public boolean isStartBeforeEnd(){
 
