@@ -123,7 +123,7 @@ public class MainController {
         eventConfirmationTokenRepository.save(eventConfirmationToken);
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo("dominik.dusinski@orbium.com");
+        mailMessage.setTo("dominik.dusinski@gmail.com");
         mailMessage.setSubject("Complete Registration of the Holiday Event");
         mailMessage.setFrom("confirmationholiday@gmail.com");
         mailMessage.setText("To confirm your event, please click here : "
