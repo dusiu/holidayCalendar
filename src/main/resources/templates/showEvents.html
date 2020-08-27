@@ -70,7 +70,7 @@
                 <td th:text="${calendarEvent.title}"></td>
                 <td th:text="${calendarEvent.start}"></td>
                 <td th:text="${calendarEvent.end}"></td>
-                <td th:text="${calendarEvent.userId}"></td>
+                <td th:text="${calendarEvent.eventUser.id}"></td>
                 <td th:text="${calendarEvent.enabled}"></td>
                 <td><a th:href="@{/delete/{id}(id=${calendarEvent.eventId})}" class="btn btn-danger" onclick="return confirm('Are you sure to delete HolidayEvent?')">Delete Event</a> </td>
             </tr>

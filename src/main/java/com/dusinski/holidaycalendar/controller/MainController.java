@@ -8,6 +8,7 @@ import com.dusinski.holidaycalendar.repository.CalendarEventRepository;
 import com.dusinski.holidaycalendar.services.EmailSenderService;
 import com.dusinski.holidaycalendar.repository.EventConfirmationTokenRepository;
 import com.dusinski.holidaycalendar.repository.UserRepository;
+import com.dusinski.holidaycalendar.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class MainController {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private UserService userService;
 
 //    @RequestMapping(path = "/add") // Map ONLY POST Requests
 //    public @ResponseBody
@@ -86,7 +90,7 @@ public class MainController {
 
         LocalDate testTime = LocalDate.parse("2020-01-04");
         model.addAttribute("eventList",
-                objectMapperCalendar.writeValueAsString(calendarEventRepository.findByUserId(1)));
+                objectMapperCalendar.writeValueAsString(calendarEventRepository.findByEventUser(userService.returnUserById(1))));
 
         return "index";
 
@@ -94,7 +98,7 @@ public class MainController {
 
     @GetMapping(path="/show")
     public String addEventForm(Model model){
-            model.addAttribute("eventListByUser", calendarEventRepository.findByUserId(1));
+            model.addAttribute("eventListByUser", calendarEventRepository.findByEventUser(userService.returnUserById(1)));
         return "showEvents";
     }
 
@@ -114,7 +118,8 @@ public class MainController {
         if (result.hasErrors()){
             return "addEventForm";
         }
-        calendarEvent.setUserId(1);
+        calendarEvent.setEventUser(userService.returnUserById(1));
+
         calendarEventRepository.save(calendarEvent);
 
         EventConfirmationToken eventConfirmationToken = new EventConfirmationToken(calendarEvent);

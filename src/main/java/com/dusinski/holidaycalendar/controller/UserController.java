@@ -14,9 +14,27 @@ public class UserController {
     UserService userService;
 
     @GetMapping(path="/show")
-    public String addEventForm(Model model){
+    public String addUserForm(Model model){
         model.addAttribute("userList", userService.findAllUsers());
         return "user/showUsers";
     }
+
+    @RequestMapping(value="/delete/{userId}")
+    public String deleteUser(@PathVariable long userId){
+        userService.deleteUserbyID(userId);
+        return "redirect:/user/show";
+    }
+
+
+
+//    @RequestMapping(value="/delete/{eventId}")
+//    public String deleteCalendarEvent(@PathVariable long eventId){
+//        calendarEventRepository.deleteById(eventId);
+//        return "redirect:/show";
+//    }
+
+
+
+
 
 }

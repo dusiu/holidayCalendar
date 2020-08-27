@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
@@ -38,7 +35,11 @@ public class CalendarEvent {
     @NotNull(message = "May not be null")
     private LocalDate  end;
 
-    private long userId;
+
+
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name="user_id")
+    private User eventUser;
 
     private boolean isEnabled;
 
@@ -86,13 +87,13 @@ public class CalendarEvent {
         this.end = end;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+//    public long getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(long userId) {
+//        this.userId = userId;
+//    }
 
     public boolean isEnabled() {
         return this.isEnabled;
@@ -102,10 +103,18 @@ public class CalendarEvent {
         isEnabled = enabled;
     }
 
-
-    public boolean isStartBeforeEnd(){
-
-        return start.isBefore(end);
+    public User getEventUser() {
+        return eventUser;
     }
+
+    public void setEventUser(User eventUser) {
+        this.eventUser = eventUser;
+    }
+
+
+//    public boolean isStartBeforeEnd(){
+//
+//        return start.isBefore(end);
+//    }
 
 }
