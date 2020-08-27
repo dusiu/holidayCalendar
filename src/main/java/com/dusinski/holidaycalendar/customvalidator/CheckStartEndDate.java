@@ -1,4 +1,4 @@
-package com.dusinski.holidaycalendar.entities;
+package com.dusinski.holidaycalendar.customvalidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -6,7 +6,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.time.LocalDate;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

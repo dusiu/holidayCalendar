@@ -1,4 +1,4 @@
-package com.dusinski.holidaycalendar.service;
+package com.dusinski.holidaycalendar.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

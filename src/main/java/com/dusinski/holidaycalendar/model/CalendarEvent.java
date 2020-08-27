@@ -1,7 +1,8 @@
 //entites
 
-package com.dusinski.holidaycalendar.entities;
+package com.dusinski.holidaycalendar.model;
 
+import com.dusinski.holidaycalendar.customvalidator.CheckStartEndDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 

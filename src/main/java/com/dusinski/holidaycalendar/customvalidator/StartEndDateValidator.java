@@ -1,10 +1,10 @@
-package com.dusinski.holidaycalendar.entities;
+package com.dusinski.holidaycalendar.customvalidator;
+
+import com.dusinski.holidaycalendar.model.CalendarEvent;
+import com.dusinski.holidaycalendar.customvalidator.CheckStartEndDate;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import javax.validation.constraintvalidation.SupportedValidationTarget;
-import javax.validation.constraintvalidation.ValidationTarget;
-import java.time.LocalDate;
 
 public class StartEndDateValidator implements ConstraintValidator<CheckStartEndDate, CalendarEvent> {
 

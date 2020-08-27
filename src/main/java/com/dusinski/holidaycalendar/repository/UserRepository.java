@@ -1,9 +1,7 @@
-package com.dusinski.holidaycalendar.service;
+package com.dusinski.holidaycalendar.repository;
 
-import com.dusinski.holidaycalendar.entities.User;
+import com.dusinski.holidaycalendar.model.User;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
 
 
 public  interface UserRepository extends CrudRepository<User, Long> {

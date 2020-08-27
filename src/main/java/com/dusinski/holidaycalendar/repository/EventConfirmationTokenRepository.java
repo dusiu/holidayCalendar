@@ -1,6 +1,6 @@
-package com.dusinski.holidaycalendar.service;
+package com.dusinski.holidaycalendar.repository;
 
-import com.dusinski.holidaycalendar.entities.EventConfirmationToken;
+import com.dusinski.holidaycalendar.model.EventConfirmationToken;
 import org.springframework.data.repository.CrudRepository;
 
 public interface EventConfirmationTokenRepository extends CrudRepository<EventConfirmationToken, String> {

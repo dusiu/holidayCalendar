@@ -1,10 +1,9 @@
-package com.dusinski.holidaycalendar.service;
+package com.dusinski.holidaycalendar.repository;
 
-import com.dusinski.holidaycalendar.entities.CalendarEvent;
+import com.dusinski.holidaycalendar.model.CalendarEvent;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 

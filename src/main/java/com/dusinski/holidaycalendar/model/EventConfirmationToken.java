@@ -1,7 +1,6 @@
-package com.dusinski.holidaycalendar.entities;
+package com.dusinski.holidaycalendar.model;
 
 import javax.persistence.*;
-import javax.sql.DataSource;
 import java.util.Date;
 import java.util.UUID;
 
