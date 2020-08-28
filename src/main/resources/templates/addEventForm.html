@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset='utf-8'/>
 
@@ -21,49 +22,72 @@
     <title>Holiday Calendar Booking Engine</title>
 
 </head>
-<body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Calendar view</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/show">Show my holidays</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/addEvent">Add new holiday</a>
-            </li>
-        </ul>
+<div class="m-5">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Calendar view</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show">Show my holidays</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/addEvent">Add new holiday</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/show">Show user list</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link float-right" href="/logout">Logout</a>
+                </li>
+            </ul>
+
+
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+
+        <div class="starter-template">
+            <p class="lead">
+            <h4>Holiday Calendar - Add Event</h4>
+            </p>
+        </div>
+
+    </main><!-- /.container -->
+    <div>
+        <form action="#" th:action="@{/addEvent}" th:object="${calendarEvent}" method="post">
+            <div class="form-group row">
+                <label class="col-sm-2 col-from-label">Name of the event</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" th:field="*{title}">
+                    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-from-label">Start</label>
+                <div class="col-sm-8">
+                    <input type="date" th:field="*{start}">
+                    <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}">Start Error</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-from-label">End</label>
+                <div class="col-sm-8">
+                    <input type="date" th:field="*{end}">
+                    <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}">End Error</span>
+                    <span th:if="${#fields.errors('global')}" th:errors="*{global}">End Error</span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
     </div>
-</nav>
-
-<main role="main" class="container">
-
-    <div class="starter-template">
-        <p class="lead">
-        <h1>Holiday Calendar - Add Event</h1>
-        </p>
-    </div>
-
-</main><!-- /.container -->
-<form action="#" th:action="@{/addEvent}" th:object="${calendarEvent}" method="post">
-    <label>Title</label>
-    <input type="text" th:field="*{title}">
-    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</span>
-
-    <label>Start</label>
-    <input type="date" th:field="*{start}">
-    <span th:if="${#fields.hasErrors('start')}" th:errors="*{start}">Start Error</span>
-
-    <label>End</label>
-    <input type="date" th:field="*{end}">
-    <span th:if="${#fields.hasErrors('end')}" th:errors="*{end}">End Error</span>
-    <span th:if="${#fields.errors('global')}" th:errors="*{global}">End Error</span>
-    <button type="submit">Submit</button>
-</form>
-
-</div>
 
 </div>
 

@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset='utf-8'/>
 
@@ -32,6 +33,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/addEvent">Add new holiday</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/show">Show user list</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link float-right" href="/logout">Logout</a>
             </li>
         </ul>
     </div>
