@@ -11,7 +11,7 @@
     <groupId>io.github.ddusinski</groupId>
     <artifactId>holidaycalendar</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mysqldb</name>
+    <name>holidayCalendar</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
