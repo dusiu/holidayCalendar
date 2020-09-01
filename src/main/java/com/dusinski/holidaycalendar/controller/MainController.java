@@ -186,7 +186,10 @@ public class MainController {
             return "verificationError";
 
         }
-
+    }
+    @RequestMapping(value="/accessDeny")
+    public String accessDeny(Model model){
+        return "accessError";
     }
 
 }
