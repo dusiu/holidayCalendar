@@ -103,13 +103,23 @@ public class MainController {
 
     @GetMapping(path="/login")
     public String loginForm(Model model){
+
+        model.addAttribute("usersList",userService.findAllUsers());
+
+//        System.out.println(model.toString());
         return "security/login";
     }
-
+//
 //    @PostMapping(path="/login")
-//    public String signIn(Model model)
+//    public String signIn(Model model,@RequestParam(value = "error", required = false) String error)
 //    {
-//        return "redirect:/";
+//        String errorMessge = null;
+//        if(error != null) {
+//            errorMessge = "Username or Password is incorrect !!";
+//        }
+//        System.out.println(model.toString());
+//        model.addAttribute("errorMessge", errorMessge);
+//        return "security/login";
 //    }
 
     @GetMapping(path="/logout")

@@ -14,7 +14,15 @@
         You have been logged out
     </div>
     <form th:action="@{/login}" method="post">
-        <div><label>User name : <input type="text" name="username"></label></div>
+        <div><label>Choose user name from the list : </label>
+        <select id="username" name="username" th:object="${usersList}">
+            <option th:each="user : ${usersList}" th:value="${user.email}" th:text="${user.email}"></option>
+
+
+
+        <select>
+        </div>
+        <!--<div><label>User name : <input type="text" name="username"></label></div>-->
         <div><label>User password : <input type="password" name="password"></label></div>
         <div><input type="submit" value ="Sign In"></div>
     </form>
