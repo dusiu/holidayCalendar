@@ -18,9 +18,7 @@
         <select id="username" name="username" th:object="${usersList}">
             <option th:each="user : ${usersList}" th:value="${user.email}" th:text="${user.email}"></option>
 
-
-
-        <select>
+        </select>
         </div>
         <!--<div><label>User name : <input type="text" name="username"></label></div>-->
         <div><label>User password : <input type="password" name="password"></label></div>

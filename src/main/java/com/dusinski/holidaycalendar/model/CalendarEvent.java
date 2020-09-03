@@ -3,12 +3,13 @@
 package com.dusinski.holidaycalendar.model;
 
 import com.dusinski.holidaycalendar.customvalidator.CheckStartEndDate;
+import com.dusinski.holidaycalendar.enums.EventType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 
@@ -24,7 +25,7 @@ public class CalendarEvent {
 
 
     @JsonProperty("title")
-    @NotBlank(message="Event title may not be null")
+    @NotBlank(message = "Event title may not be null")
     private String title;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -33,27 +34,18 @@ public class CalendarEvent {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "May not be null")
-    private LocalDate  end;
-
+    private LocalDate end;
 
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name="user_id")
+    @JoinColumn(nullable = false, name = "user_id")
     private User eventUser;
 
     private boolean isEnabled;
 
-//    public CalendarEvent() {
-//        this.email="test_name";
-//        this.email="test_email";
-//    }
+    @Enumerated(EnumType.STRING)
+    private EventType eventType;
 
-//    @ConsistentDateParameters
-//    public CalendarEvent(String title, LocalDate start, LocalDate end) {
-//        this.title = title;
-//        this.start = start;
-//        this.end = end;
-//    }
 
     public long getEventId() {
         return this.eventId;
@@ -87,13 +79,6 @@ public class CalendarEvent {
         this.end = end;
     }
 
-//    public long getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(long userId) {
-//        this.userId = userId;
-//    }
 
     public boolean isEnabled() {
         return this.isEnabled;
@@ -111,10 +96,13 @@ public class CalendarEvent {
         this.eventUser = eventUser;
     }
 
+    public EventType getEventType() {
+        return eventType;
+    }
 
-//    public boolean isStartBeforeEnd(){
-//
-//        return start.isBefore(end);
-//    }
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
 
 }

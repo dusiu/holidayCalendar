@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/", "/main.css", "/main.js")
+                    .antMatchers("/", "/main.css", "/main.js","/h2-console/**")
                     .permitAll()
                     .antMatchers("/addEvent").hasAnyAuthority("ADMIN", "USER")
                     .antMatchers("/user/**").hasAuthority("ADMIN")
@@ -38,8 +38,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .logout()
                     .permitAll()
-                .logoutSuccessUrl("/")
-;
+                .logoutSuccessUrl("/");
+
+//        http.csrf().disable();
+//        http.headers().frameOptions().disable();
+
     }
 
 //    @Bean
