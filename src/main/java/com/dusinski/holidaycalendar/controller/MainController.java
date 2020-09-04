@@ -39,11 +39,11 @@ public class MainController {
     @Autowired
     private ObjectMapper objectMapperCalendar = new ObjectMapper();
 
-    @Autowired
-    private EventConfirmationTokenRepository eventConfirmationTokenRepository;
+//    @Autowired
+//    private EventConfirmationTokenRepository eventConfirmationTokenRepository;
 
-    @Autowired
-    private EmailSenderService emailSenderService;
+//    @Autowired
+//    private EmailSenderService emailSenderService;
 
     @Autowired
     private UserService userService;
@@ -132,71 +132,10 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping(path="/show")
-    public String addEventForm(Model model){
-            model.addAttribute("eventListByUser", calendarEventRepository.findByEventUser(userService.returnUserById(1)));
-        return "showEvents";
-    }
-
-    @RequestMapping(value="/delete/{eventId}")
-    public String deleteCalendarEvent(@PathVariable long eventId){
-        calendarEventRepository.deleteById(eventId);
-        return "redirect:/show";
-    }
-
-    @GetMapping(path="/addEvent")
-    public String showAddEventForm(CalendarEvent calendarEvent){
-        return "addEventForm";
-    }
-
-    @PostMapping(path="/addEvent")
-    public String checkEvent(@Valid CalendarEvent calendarEvent, BindingResult result){
-        if (result.hasErrors()){
-            return "addEventForm";
-        }
-        calendarEvent.setEventUser(userService.returnUserById(1));
-
-        calendarEventRepository.save(calendarEvent);
-
-        EventConfirmationToken eventConfirmationToken = new EventConfirmationToken(calendarEvent);
-        eventConfirmationTokenRepository.save(eventConfirmationToken);
-
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo("dominik.dusinski@gmail.com");
-        mailMessage.setSubject("Complete Registration of the Holiday Event");
-        mailMessage.setFrom("confirmationholiday@gmail.com");
-        mailMessage.setText("To confirm your event, please click here : "
-        + "http://localhost:8090/confirm-account?token="+eventConfirmationToken.getEventConfirmationToken()
-        );
-
-        emailSenderService.sendEmail(mailMessage);
-
-        //model.addAttribute("calendarEvent", calendarEventRepository.findByUserId(1));
-        return "redirect:/show";
-    }
 
 
-    @RequestMapping(value="/confirm-account", method={RequestMethod.GET, RequestMethod.POST})
-    public String confirmEvent(Model model, @RequestParam("token") String confirmationToken){
-        EventConfirmationToken token = eventConfirmationTokenRepository.findByEventConfirmationToken(confirmationToken);
 
-        if (token!= null)
-        {
-            CalendarEvent calendarEvent = calendarEventRepository.findById(token.getCalendarEvent().getEventId());
-            System.out.println("Calendar event Id:"+calendarEvent.getEventId());
-            System.out.println("before token:"+calendarEvent.isEnabled());
-            calendarEvent.setEnabled(true);
-            System.out.println("after token:"+calendarEvent.isEnabled());
-            calendarEventRepository.save(calendarEvent);
-            return "accountVerified";
 
-        }
-        else
-        {
-            return "verificationError";
-
-        }
-    }
     @RequestMapping(value="/accessDeny")
     public String accessDeny(Model model){
         return "accessError";
