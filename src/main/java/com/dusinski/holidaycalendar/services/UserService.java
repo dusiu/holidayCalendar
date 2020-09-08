@@ -32,6 +32,8 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public User returnUserByEmail(String email){return userRepository.findByEmail(email);}
+
     public void addUser( User user){
         userRepository.save(user);
     }

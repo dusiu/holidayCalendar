@@ -23,7 +23,6 @@ public class CalendarEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long eventId;
 
-
     @JsonProperty("title")
     @NotBlank(message = "Event title may not be null")
     private String title;
@@ -35,7 +34,6 @@ public class CalendarEvent {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "May not be null")
     private LocalDate end;
-
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
@@ -104,5 +102,14 @@ public class CalendarEvent {
         this.eventType = eventType;
     }
 
+    @Override
+    public String toString() {
+
+        return "CalendarEvent{"+
+                "title: "+title+
+                ", start: "+start+
+                ", end:"+end+
+                "}";
+    }
 
 }

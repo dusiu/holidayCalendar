@@ -1,13 +1,8 @@
 package com.dusinski.holidaycalendar.controller;
 
 import com.dusinski.holidaycalendar.model.CalendarEvent;
-import com.dusinski.holidaycalendar.model.EventConfirmationToken;
-import com.dusinski.holidaycalendar.repository.CalendarEventRepository;
-import com.dusinski.holidaycalendar.repository.EventConfirmationTokenRepository;
-import com.dusinski.holidaycalendar.services.EmailSenderService;
-import com.dusinski.holidaycalendar.services.UserService;
+import com.dusinski.holidaycalendar.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,75 +11,51 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(path="/event")
+@RequestMapping(path = "/event")
 public class EventController {
 
     @Autowired
-    private CalendarEventRepository calendarEventRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EventConfirmationTokenRepository eventConfirmationTokenRepository;
-    @Autowired
-    private EmailSenderService emailSenderService;
+    private EventService eventService;
 
-    @GetMapping(path="/show")
-    public String addEventForm(Model model){
-        model.addAttribute("eventListByUser", calendarEventRepository.findByEventUser(userService.returnUserById(1)));
+    @GetMapping(path = "/show")
+    public String addEventForm(Model model) {
+
+        model.addAttribute("eventListByUser", eventService.findEventsByUser());
+
         return "/event/showEvents";
     }
 
-    @RequestMapping(value="/delete/{eventId}")
-    public String deleteCalendarEvent(@PathVariable long eventId){
-        calendarEventRepository.deleteById(eventId);
+    @RequestMapping(value = "/delete/{eventId}")
+    public String deleteCalendarEvent(@PathVariable long eventId) {
+        eventService.deleteEventById(eventId);
         return "redirect:/event/show";
     }
 
-    @GetMapping(path="/addEvent")
-    public String showAddEventForm(CalendarEvent calendarEvent){
+    @GetMapping(path = "/addEvent")
+    public String showAddEventForm(CalendarEvent calendarEvent) {
         return "/event/addEventForm";
     }
 
-    @PostMapping(path="/addEvent")
-    public String checkEvent(@Valid CalendarEvent calendarEvent, BindingResult result){
-        if (result.hasErrors()){
+    @PostMapping(path = "/addEvent")
+    public String checkEvent(@Valid CalendarEvent calendarEvent, BindingResult result) {
+        if (result.hasErrors()) {
             return "/event/addEventForm";
         }
-        calendarEvent.setEventUser(userService.returnUserById(1));
 
-        calendarEventRepository.save(calendarEvent);
-
-        EventConfirmationToken eventConfirmationToken = new EventConfirmationToken(calendarEvent);
-        eventConfirmationTokenRepository.save(eventConfirmationToken);
-
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo("dominik.dusinski@gmail.com");
-        mailMessage.setSubject("Complete Registration of the Holiday Event");
-        mailMessage.setFrom("confirmationholiday@gmail.com");
-        mailMessage.setText("To confirm your event, please click here : "
-                + "http://localhost:8090/event/confirm-event?token="+eventConfirmationToken.getEventConfirmationToken()
-        );
-
-        emailSenderService.sendEmail(mailMessage);
-
+        eventService.saveCalendarEvent(calendarEvent);
         return "/event/eventWaitForVerification";
     }
-    @RequestMapping(value="/confirm-event", method={RequestMethod.GET, RequestMethod.POST})
-    public String confirmEvent(Model model, @RequestParam("token") String confirmationToken){
-        EventConfirmationToken token = eventConfirmationTokenRepository.findByEventConfirmationToken(confirmationToken);
 
-        if (token!= null)
-        {
-            CalendarEvent calendarEvent = calendarEventRepository.findById(token.getCalendarEvent().getEventId());
-            calendarEvent.setEnabled(true);
-            calendarEventRepository.save(calendarEvent);
+    @RequestMapping(value = "/confirm-event", method = {RequestMethod.GET, RequestMethod.POST})
+    public String confirmEvent(Model model, @RequestParam("token") String confirmationToken) {
+
+        if (eventService.tokenExist(confirmationToken)) {
+
+            eventService.activateEvent(confirmationToken);
+
             return "/event/eventVerified";
-
-        }
-        else
-        {
+        } else {
             return "/event/eventVerificationError";
-
         }
     }
 }

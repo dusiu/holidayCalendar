@@ -25,8 +25,6 @@ public class EventConfirmationToken {
     private CalendarEvent calendarEvent;
 
 
-
-
     public long getTokenId() {
         return tokenId;
     }
