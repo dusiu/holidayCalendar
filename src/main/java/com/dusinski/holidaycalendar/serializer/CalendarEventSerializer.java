@@ -35,6 +35,7 @@ public class CalendarEventSerializer extends StdSerializer<CalendarEvent> {
         jgen.writeStringField("start", calendarEvent.getStart().toString());
         jgen.writeStringField("end", calendarEvent.getEnd().toString());
         jgen.writeStringField("color",textColor);
+        jgen.writeStringField("description", calendarEvent.getDescription());
         jgen.writeEndObject();
 
 

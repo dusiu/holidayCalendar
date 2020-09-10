@@ -102,14 +102,20 @@ public class CalendarEvent {
         this.eventType = eventType;
     }
 
-    @Override
-    public String toString() {
-
-        return "CalendarEvent{"+
-                "title: "+title+
-                ", start: "+start+
-                ", end:"+end+
-                "}";
+    public String getDescription(){return   "User: "+this.eventUser.getEmail()+
+                                            " event type: "+this.eventType +
+                                            " event start: "+this.start+
+                                            " event end: "+this.end;
     }
+
+//    @Override
+//    public String toString() {
+//
+//        return "CalendarEvent{"+
+//                "title: "+title+
+//                ", start: "+start+
+//                ", end:"+end+
+//                "}";
+//    }
 
 }

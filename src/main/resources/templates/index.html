@@ -4,15 +4,19 @@
 <head>
     <meta charset='utf-8'/>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+    <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
 
     <link href='/main.css' rel='stylesheet'/>
     <script src='/main.js'></script>
+
+<!--     Bootstrap CSS-->
+<!--            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
+<!--                  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+<!--            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+
+
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
@@ -30,14 +34,24 @@
                     initialView: 'dayGridMonth',
                     initialDate: '2020-08-12',
                     navLinks: true, // can click day/week names to navigate views
-                    editable: true,
-                    selectable: true,
+                    editable: false,
+                    selectable: false,
                     nowIndicator: true,
                     dayMaxEvents: true, // allow "more" link when too many events
-                    events: JSON.parse(input)
+                    events: JSON.parse(input),
+                    eventDidMount: function (info) {
+                        var tooltip = new Tooltip(info.el, {
+                            title: info.event.extendedProps.description,
+                            placement: 'bottom',
+                            trigger: 'hover',
+                            container: 'body'
+                        });
+                    }
+
+
                 }
             );
-            console.debug(JSON.parse(input));
+
             calendar.render();
         });
 
@@ -71,33 +85,159 @@
         }
 
     </style>
+
+    <style>
+
+        /*
+        i wish this required CSS was better documented :(
+        https://github.com/FezVrasta/popper.js/issues/674
+        derived from this CSS on this page: https://popper.js.org/tooltip-examples.html
+        */
+
+        .popper,
+        .tooltip {
+            position: absolute;
+            z-index: 9999;
+            background: #FFC107;
+            color: black;
+            width: 150px;
+            border-radius: 3px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .style5 .tooltip {
+            background: #1E252B;
+            color: #FFFFFF;
+            max-width: 200px;
+            width: auto;
+            font-size: .8rem;
+            padding: .5em 1em;
+        }
+
+        .popper .popper__arrow,
+        .tooltip .tooltip-arrow {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            position: absolute;
+            margin: 5px;
+        }
+
+        .tooltip .tooltip-arrow,
+        .popper .popper__arrow {
+            border-color: #ffc107;
+        }
+
+        .style5 .tooltip .tooltip-arrow {
+            border-color: #1E252B;
+        }
+
+        .popper[x-placement^="top"],
+        .tooltip[x-placement^="top"] {
+            margin-bottom: 5px;
+        }
+
+        .popper[x-placement^="top"] .popper__arrow,
+        .tooltip[x-placement^="top"] .tooltip-arrow {
+            border-width: 5px 5px 0 5px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            bottom: -5px;
+            left: calc(50% - 5px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .popper[x-placement^="bottom"],
+        .tooltip[x-placement^="bottom"] {
+            margin-top: 5px;
+        }
+
+        .tooltip[x-placement^="bottom"] .tooltip-arrow,
+        .popper[x-placement^="bottom"] .popper__arrow {
+            border-width: 0 5px 5px 5px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            top: -5px;
+            left: calc(50% - 5px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .tooltip[x-placement^="right"],
+        .popper[x-placement^="right"] {
+            margin-left: 5px;
+        }
+
+        .popper[x-placement^="right"] .popper__arrow,
+        .tooltip[x-placement^="right"] .tooltip-arrow {
+            border-width: 5px 5px 5px 0;
+            border-left-color: transparent;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            left: -5px;
+            top: calc(50% - 5px);
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .popper[x-placement^="left"],
+        .tooltip[x-placement^="left"] {
+            margin-right: 5px;
+        }
+
+        .popper[x-placement^="left"] .popper__arrow,
+        .tooltip[x-placement^="left"] .tooltip-arrow {
+            border-width: 5px 0 5px 5px;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            right: -5px;
+            top: calc(50% - 5px);
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+    </style>
+
+
+
+
     <title>Holiday Calendar Booking Engine</title>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Calendar view</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/event/show">Show my holidays</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/event/addEvent">Add new holiday</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/user/show">Show user list</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li sec:authorize="isAuthenticated()" class="nav-item">
-                <a class="nav-link float-right" href="/logout">Logout</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<div class="m-5">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" active>
+                    <a class="nav-link" href="/">Calendar view</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/event/show">Show my holidays</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/event/addEvent">Add new holiday</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/show">Show user list</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link float-right" href="/logout">Logout</a>
+                </li>
+            </ul>
+
+
+        </div>
+    </nav>
 
 <main role="main" class="container">
     <div class="starter-template">
@@ -106,15 +246,17 @@
         </p>
 
     </div>
-
-    <div id='calendar-container'>
-        <div id='calendar'></div>
-    </div>
 </main><!-- /.container -->
+
+
+<div id='calendar-container'>
+    <div id='calendar'></div>
+</div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
