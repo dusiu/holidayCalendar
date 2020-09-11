@@ -103,9 +103,9 @@ public class CalendarEvent {
     }
 
     public String getDescription(){return   "User: "+this.eventUser.getEmail()+
-                                            " event type: "+this.eventType +
-                                            " event start: "+this.start+
-                                            " event end: "+this.end;
+                                            "\n\r event type: "+this.eventType +
+                                            "\n\r event start: "+this.start+
+                                            "\n\r event end: "+this.end;
     }
 
 //    @Override
