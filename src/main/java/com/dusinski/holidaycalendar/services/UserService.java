@@ -37,4 +37,6 @@ public class UserService {
     public void addUser( User user){
         userRepository.save(user);
     }
+
+    public Iterable<User> findAllManagers(){return userRepository.findUserByIsAdmin(true);}
 }

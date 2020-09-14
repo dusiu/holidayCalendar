@@ -33,7 +33,9 @@ public class UserController {
     }
 
     @GetMapping(path = "/add")
-    public String addUserForm(User user) {
+    public String addUserForm(User user, Model model) {
+        model.addAttribute("adminList", userService.findAllManagers());
+
         return "user/addUser";
     }
 
@@ -43,6 +45,8 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/addUser";
         }
+
+        System.out.println("User's Manager: "+user.getUsersManager().getEmail());
         userService.addUser(user);
 
         return "redirect:/user/show";

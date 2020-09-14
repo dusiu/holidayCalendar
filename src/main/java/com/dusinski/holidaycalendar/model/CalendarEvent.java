@@ -108,14 +108,5 @@ public class CalendarEvent {
                                             "\n\r event end: "+this.end;
     }
 
-//    @Override
-//    public String toString() {
-//
-//        return "CalendarEvent{"+
-//                "title: "+title+
-//                ", start: "+start+
-//                ", end:"+end+
-//                "}";
-//    }
 
 }

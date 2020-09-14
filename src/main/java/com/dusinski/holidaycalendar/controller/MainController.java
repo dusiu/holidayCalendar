@@ -76,7 +76,7 @@ public class MainController {
 
     @RequestMapping(value = "/accessDeny")
     public String accessDeny(Model model) {
-        return "accessError";
+        return "/security/accessError";
     }
 
 }

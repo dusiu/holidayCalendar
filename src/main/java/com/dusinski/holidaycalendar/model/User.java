@@ -1,9 +1,6 @@
 package com.dusinski.holidaycalendar.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 
 @Entity
@@ -11,14 +8,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @Id
+    //    @Id
     @Email
     private String email;
     private boolean isAdmin;
-
-
     private String password;
 
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = true, name = "manager_id")
+    private User usersManager;
 
     public User() {
     }
@@ -57,4 +55,11 @@ public class User {
         this.password = password;
     }
 
+    public User getUsersManager() {
+        return usersManager;
+    }
+
+    public void setUsersManager(User usersManager) {
+        this.usersManager = usersManager;
+    }
 }

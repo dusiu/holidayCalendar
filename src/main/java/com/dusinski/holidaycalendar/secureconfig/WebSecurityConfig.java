@@ -45,17 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService(){
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                                    .username("dd")
-//                                    .password("dd")
-//                                    .roles("USER")
-//                                    .build();
-//        return new InMemoryUserDetailsManager(user);
-//    }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

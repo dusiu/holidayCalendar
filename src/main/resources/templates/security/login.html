@@ -16,12 +16,13 @@
     <form th:action="@{/login}" method="post" >
         <div><label>Choose user name from the list : </label>
         <select id="username" name="username" th:object="${usersList}"  onclick="myFunction()">
+            <option>Please select your email</option>
             <option th:each="user : ${usersList}" th:value="${user.email}" th:text="${user.email}" th:title="${user.admin}" ></option>
 
         </select>
         </div>
         <!--<div><label>User name : <input type="text" name="username"></label></div>-->
-        <div><label>User password : <input id="password" type="password" name="password" style="display: none" ></label></div>
+        <div><label id="passwordLabel" style="display: none">User password : <input id="password" type="password" name="password" style="display: none" ></label></div>
         <div><input type="submit" value ="Sign In"></div>
     </form>
 
@@ -30,13 +31,15 @@
         var selectList = document.getElementById("username");
         var selectedValue = selectList.options[selectList.selectedIndex].title;
         var passwordInputText=document.getElementById("password");
+        var selectedLabel=document.getElementById("passwordLabel")
         // console.debug("selectedValue.value: "+selectedValue);
         if (selectedValue=="true"){
             passwordInputText.style.display="block";
-
+            selectedLabel.style.display="block";
         }
         else
         {passwordInputText.style.display="none";
+            selectedLabel.style.display="none";
         }
     }
     </script>

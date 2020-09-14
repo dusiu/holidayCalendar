@@ -35,12 +35,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/event/show">Show my holidays</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item ">
                     <a class="nav-link" href="/event/addEvent">Add new holiday</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="/user/show">Show user list</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user/add">Add new user</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -71,6 +74,7 @@
                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label class="col-sm-2 col-from-label">Is the user an Admin</label>
                 <div class="col-sm-8">
@@ -78,13 +82,28 @@
                     <span th:if="${#fields.hasErrors('admin')}" th:errors="*{admin}">Is Admin error</span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-from-label">Admin password</label>
-                <div class="col-sm-8">
-                    <input type="text" id="passInputText" style="display: none" class="form-control" th:field="*{password}">
-                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Pasword Error</span>
+
+                <div class="form-group row" id="adminList" style="display: block">
+                    <label class="col-sm-2 col-from-label">Name of the admin</label>
+                    <div class="col-sm-8">
+                        <select id="usersManager" name="usersManager" th:object="${adminList}">
+                            <option>Please select name of the manager:</option>
+                            <option th:each="user : ${adminList}" th:value="${user.id}"
+                                    th:text="${user.email}"></option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+
+
+                <div class="form-group row" id="adminPass" style="display: none">
+                    <label class="col-sm-2 col-from-label">Admin password</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="passInputText"  class="form-control"
+                               th:field="*{password}">
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Pasword Error</span>
+                    </div>
+                </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
@@ -106,16 +125,18 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script>function myFunction(){
+<script>function myFunction() {
 
     var checkBox = document.getElementById("adminCheckBox");
-    var passInput = document.getElementById("passInputText");
-
-    if (checkBox.checked==true){
-        passInput .style.display="block";
+    var adminPassDiv = document.getElementById("adminPass");
+    var adminListDiv = document.getElementById("adminList");
+    if (checkBox.checked == true) {
+        adminPassDiv.style.display = "block";
+        adminListDiv.style.display = "none";
+    } else {
+        adminPassDiv.style.display = "none";
+        adminListDiv.style.display = "block";
     }
-    else
-    {passInput .style.display="none";}
 }
 </script>
 <!--</div>-->

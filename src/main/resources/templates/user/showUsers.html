@@ -35,6 +35,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/user/show">Show user list</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/add">Add new user</a>
+            </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li sec:authorize="isAuthenticated()" class="nav-item">
@@ -66,6 +69,7 @@
                 <th scope="col">User id</th>
                 <th scope="col">email</th>
                 <th scope="col">is Admin</th>
+                <th scope="col">Manager's name</th>
                 <th scope="col">Click to delete</th>
             </tr>
             </thead>
@@ -74,7 +78,7 @@
                 <td scope="row" th:text="${user.id}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.admin}"></td>
-
+                <td th:text="${user.getUsersManager()!=null}?${user.getUsersManager().email}"></td>
                 <td><a th:href="@{/user/delete/{id}(id=${user.id})}" class="btn btn-danger" onclick="return confirm('Are you sure to delete User? His holiday events will be erased too')">Delete User</a> </td>
             </tr>
             </tbody>
