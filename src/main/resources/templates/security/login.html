@@ -22,7 +22,9 @@
         </select>
         </div>
         <!--<div><label>User name : <input type="text" name="username"></label></div>-->
-        <div><label id="passwordLabel" style="display: none">User password : <input id="password" type="password" name="password" style="display: none" ></label></div>
+        <div id="passwordDiv" style="display: none">
+            <label>User password : <input id="password" type="password" name="password"></label>
+        </div>
         <div><input type="submit" value ="Sign In"></div>
     </form>
 
@@ -30,16 +32,17 @@
         // console.debug("on beginning");
         var selectList = document.getElementById("username");
         var selectedValue = selectList.options[selectList.selectedIndex].title;
-        var passwordInputText=document.getElementById("password");
-        var selectedLabel=document.getElementById("passwordLabel")
+        // var passwordInputText=document.getElementById("password");
+        var passwordDiv=document.getElementById("passwordDiv")
         // console.debug("selectedValue.value: "+selectedValue);
         if (selectedValue=="true"){
-            passwordInputText.style.display="block";
-            selectedLabel.style.display="block";
+            // passwordInputText.style.display="block";
+            passwordDiv.style.display="block";
         }
         else
-        {passwordInputText.style.display="none";
-            selectedLabel.style.display="none";
+        {
+            // passwordInputText.style.display="none";
+            passwordDiv.style.display="none";
         }
     }
     </script>

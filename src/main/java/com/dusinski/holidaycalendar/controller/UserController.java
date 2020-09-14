@@ -40,13 +40,15 @@ public class UserController {
     }
 
     @PostMapping(path = "add")
-    public String addUserForm(@Valid User user, BindingResult result) {
+    public String addUserForm(@Valid User user, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
+            System.out.println("There was an exception: "+ result.toString());
+            model.addAttribute("adminList", userService.findAllManagers());
             return "user/addUser";
         }
 
-        System.out.println("User's Manager: "+user.getUsersManager().getEmail());
+
         userService.addUser(user);
 
         return "redirect:/user/show";

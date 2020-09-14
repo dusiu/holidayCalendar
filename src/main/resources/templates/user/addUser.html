@@ -87,7 +87,8 @@
                     <label class="col-sm-2 col-from-label">Name of the admin</label>
                     <div class="col-sm-8">
                         <select id="usersManager" name="usersManager" th:object="${adminList}">
-                            <option>Please select name of the manager:</option>
+
+                            <option id="chooseManagerOption">Please select name of the manager:</option>
                             <option th:each="user : ${adminList}" th:value="${user.id}"
                                     th:text="${user.email}"></option>
                         </select>
@@ -100,7 +101,7 @@
                     <div class="col-sm-8">
                         <input type="text" id="passInputText"  class="form-control"
                                th:field="*{password}">
-                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Pasword Error</span>
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
                     </div>
                 </div>
 
@@ -130,15 +131,17 @@
     var checkBox = document.getElementById("adminCheckBox");
     var adminPassDiv = document.getElementById("adminPass");
     var adminListDiv = document.getElementById("adminList");
+    var adminOption = document.getElementById("chooseManagerOption");
     if (checkBox.checked == true) {
         adminPassDiv.style.display = "block";
         adminListDiv.style.display = "none";
+        adminOption.value=0;
     } else {
         adminPassDiv.style.display = "none";
         adminListDiv.style.display = "block";
+        adminOption.value='null';
     }
 }
 </script>
-<!--</div>-->
 </body>
 </html>
