@@ -26,11 +26,8 @@ public class UserService {
 
     @Transactional
     public void deleteUserbyID(long userID) {
-
         User tempUser = returnUserById(userID);
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if (tempUser.getEmail()==auth.getName()) {
         System.out.println("Prevent against deleting by yourself");
         }

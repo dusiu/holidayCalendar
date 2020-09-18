@@ -2,7 +2,10 @@ package com.dusinski.holidaycalendar.controller;
 
 import com.dusinski.holidaycalendar.model.CalendarEvent;
 import com.dusinski.holidaycalendar.services.EventService;
+import com.dusinski.holidaycalendar.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,12 +20,22 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @GetMapping(path = "/show")
-    public String addEventForm(Model model) {
+    @Autowired
+    private UserService userService;
 
-        model.addAttribute("eventListByUser", eventService.findEventsByUser());
-
+    @RequestMapping(value = {"/show","/show/{userId}"})
+    public String reloadShowEventsForm(@PathVariable(required = false) Long userId, Model model)
+    {
+        if (userId==null)
+        {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            userId=userService.returnUserByEmail(auth.getName()).getId();
+        }
+        model.addAttribute("userName",userService.returnUserById(userId));
+        model.addAttribute("eventListByUser", eventService.findEventsByUser(userService.returnUserById(userId)));
+        model.addAttribute("userList",userService.findAllUsers());
         return "/event/showEvents";
+
     }
 
     @RequestMapping(value = "/delete/{eventId}")

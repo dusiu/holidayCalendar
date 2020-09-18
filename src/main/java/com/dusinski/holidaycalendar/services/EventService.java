@@ -41,7 +41,7 @@ public class EventService {
         return calendarEventRepository.findByEventUser(user);
     }
 
-    public List<CalendarEvent> findEventsByUser(){
+    public List<CalendarEvent> findEventsByCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return calendarEventRepository.findByEventUser(userService.returnUserByEmail(auth.getName()));
     }
