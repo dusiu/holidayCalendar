@@ -1,2 +1,16 @@
-insert into Calendar_Event(group_Id,event_Name, start, end) values (default ,'event1','2020-08-07','2020-08-08');
-insert into Calendar_Event(group_Id,event_Name, start, end) values (default,'event1', '2020-08-12','2020-08-13');
+insert into User(id,email, is_admin, password,MANAGER_ID) values (default,'dominik.dusinski@gmail.com', true,'dd', null);
+insert into User(id,email, is_admin, password,MANAGER_ID) values (default,'dusiud@gmail.com', false,'',1);
+
+insert into Calendar_Event(event_id,title, start, end, user_Id, is_Enabled, event_Type)
+values (default ,'event1','2020-08-21','2020-08-23',1, true,'HOLIDAY' );
+
+insert into Calendar_Event(event_id,title, start, end, user_Id, is_Enabled, event_Type)
+values (default,'event2', '2020-08-23','2020-08-25',1, true,'TRAINING');
+
+insert into Calendar_Event(event_id,title, start, end, user_Id, is_Enabled, event_Type)
+values (default ,'event3','2020-08-26','2020-08-28',1, true,'HOLIDAY' );
+
+insert into Calendar_Event(event_id,title, start, end, user_Id, is_Enabled, event_Type)
+values (default,'event4', '2020-08-29','2020-08-30',2, true,'TRAINING');
+
+

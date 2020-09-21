@@ -2,9 +2,10 @@ package com.dusinski.holidaycalendar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class MyHolidayCalendarApplication {
+public class MyHolidayCalendarApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(MyHolidayCalendarApplication.class, args);
