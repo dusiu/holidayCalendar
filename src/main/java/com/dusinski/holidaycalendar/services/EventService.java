@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 public class EventService {
-
+    private static final String EMAIL_FROM = "confirmationholiday@gmail.com";
     @Autowired
     private CalendarEventRepository calendarEventRepository;
     @Autowired
@@ -26,27 +26,30 @@ public class EventService {
     @Autowired
     private EmailSenderService emailSenderService;
 
-    private void sendEmail(String confirmationToken, String emailAddress){
+    public boolean sendEmail(String confirmationToken, String emailAddress){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(emailAddress);
         mailMessage.setSubject("Complete Registration of the Holiday Event");
-        mailMessage.setFrom("confirmationholiday@gmail.com");
+        mailMessage.setFrom(EMAIL_FROM);
         mailMessage.setText("To confirm your event, please click here : "
                 + "http://localhost:8090/event/confirm-event?token="+confirmationToken
         );
-        emailSenderService.sendEmail(mailMessage);
+//        emailSenderService.sendEmail(mailMessage);
+        return true;
     }
 
     public List<CalendarEvent> findEventsByUser(User user){
-        return calendarEventRepository.findByEventUser(user);
+//        return calendarEventRepository.findByEventUser(user);
+        return null;
     }
 
     public List<CalendarEvent> findEventsByCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return calendarEventRepository.findByEventUser(userService.returnUserByEmail(auth.getName()));
+//        return calendarEventRepository.findByEventUser(userService.returnUserByEmail(auth.getName()));
+        return null;
     }
 
-    public Iterable<CalendarEvent>findAll(){
+    public List<CalendarEvent>findAll(){
         return calendarEventRepository.findAll();
     }
 
@@ -59,10 +62,10 @@ public class EventService {
     public void saveCalendarEvent(CalendarEvent calendarEvent){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (calendarEvent.getEventUser() == null)
-        {
-            calendarEvent.setEventUser(userService.returnUserByEmail(auth.getName()));
-        }
+//        if (calendarEvent.getEventUser() == null)
+//        {
+//            calendarEvent.setEventUser(userService.returnUserByEmail(auth.getName()));
+//        }
         calendarEventRepository.save(calendarEvent);
 
         EventConfirmationToken eventConfirmationToken = new EventConfirmationToken(calendarEvent);

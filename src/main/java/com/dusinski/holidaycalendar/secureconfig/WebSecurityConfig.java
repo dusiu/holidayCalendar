@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,21 +23,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/", "/main.css", "/main.js","/h2-console/**")
-                    .permitAll()
-                    .antMatchers("/addEvent").hasAnyAuthority("ADMIN", "USER")
-                    .antMatchers("/user/**").hasAuthority("ADMIN")
-                    .anyRequest().authenticated()
+                .antMatchers("/**").permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/accessDeny")
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll()
-                .logoutSuccessUrl("/");
+                .csrf().disable();
+//        http.authorizeRequests()
+//                    .antMatchers("/", "/main.css", "/main.js","/h2-console/**")
+//                    .permitAll()
+////                    .antMatchers("/addEvent").hasAnyAuthority("ADMIN", "USER")
+//                    .antMatchers("/user/**").hasAuthority("ADMIN")
+//                    .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling().accessDeniedPage("/accessDeny")
+//                    .and()
+//                .formLogin()
+//                    .loginPage("/login")
+//                    .permitAll()
+//                    .and()
+//                .logout()
+//                    .permitAll()
+//                .logoutSuccessUrl("/");
 
 //        http.csrf().disable();
 //        http.headers().frameOptions().disable();
@@ -55,12 +58,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 
     @Override
-    protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
 

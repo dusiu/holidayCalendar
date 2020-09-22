@@ -1,6 +1,7 @@
 package com.dusinski.holidaycalendar.controller;
 
 import com.dusinski.holidaycalendar.model.CalendarEvent;
+import com.dusinski.holidaycalendar.model.User;
 import com.dusinski.holidaycalendar.services.EventService;
 import com.dusinski.holidaycalendar.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path = "/event")
 public class EventController {
 
@@ -45,16 +47,15 @@ public class EventController {
     }
 
     @GetMapping(path = "/addEvent")
-    public String showAddEventForm(CalendarEvent calendarEvent) {
+    public String showAddEventForm() {
         return "/event/addEventForm";
     }
 
     @PostMapping(path = "/addEvent")
-    public String checkEvent(@Valid CalendarEvent calendarEvent, BindingResult result) {
+    public String addEvent(@RequestBody @Valid CalendarEvent calendarEvent, BindingResult result) {
         if (result.hasErrors()) {
             return "/event/addEventForm";
         }
-
         eventService.saveCalendarEvent(calendarEvent);
         return "/event/eventWaitForVerification";
     }
@@ -70,5 +71,10 @@ public class EventController {
         } else {
             return "/event/eventVerificationError";
         }
+    }
+
+    @GetMapping("/getEvents")
+    public List<CalendarEvent> test() {
+        return eventService.findAll();
     }
 }

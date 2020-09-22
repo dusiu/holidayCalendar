@@ -5,6 +5,8 @@ package com.dusinski.holidaycalendar.model;
 import com.dusinski.holidaycalendar.customvalidator.CheckStartEndDate;
 import com.dusinski.holidaycalendar.enums.EventType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,46 +21,43 @@ public class CalendarEvent {
 
 
     @Id
-    @JsonProperty("event_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long eventId;
+    private Long eventId;
 
-    @JsonProperty("title")
     @NotBlank(message = "Event title may not be null")
     private String title;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull(message = "May not be null")
     private LocalDate start;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull(message = "May not be null")
     private LocalDate end;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
-    private User eventUser;
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id")
+//    private User eventUser;
 
-    private boolean isEnabled;
+    private Boolean isEnabled;
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-
-    public long getEventId() {
-        return this.eventId;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setEventId(long id) {
-        this.eventId = id;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String eventName) {
-        this.title = eventName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public LocalDate getStart() {
@@ -77,21 +76,20 @@ public class CalendarEvent {
         this.end = end;
     }
 
+//    public User getEventUser() {
+//        return eventUser;
+//    }
 
-    public boolean isEnabled() {
-        return this.isEnabled;
+//    public void setEventUser(User eventUser) {
+//        this.eventUser = eventUser;
+//    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         isEnabled = enabled;
-    }
-
-    public User getEventUser() {
-        return eventUser;
-    }
-
-    public void setEventUser(User eventUser) {
-        this.eventUser = eventUser;
     }
 
     public EventType getEventType() {
@@ -101,12 +99,4 @@ public class CalendarEvent {
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
-
-    public String getDescription(){return   "User: "+this.eventUser.getEmail()+
-                                            "\n\r event type: "+this.eventType +
-                                            "\n\r event start: "+this.start+
-                                            "\n\r event end: "+this.end;
-    }
-
-
 }

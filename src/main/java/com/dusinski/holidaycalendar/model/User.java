@@ -20,9 +20,8 @@ public class User {
     private boolean isAdmin;
     private String password;
 
-
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = true, name = "manager_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private User usersManager;
 
     public User() {

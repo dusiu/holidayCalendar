@@ -32,15 +32,7 @@ public class UserService {
         System.out.println("Prevent against deleting by yourself");
         }
 
-        calendarEventRepository.deleteByEventUser(tempUser);
-
-        if (tempUser.isAdmin()) {
-
-            for (User user:userRepository.findUserByUsersManager(tempUser)
-            ) {
-                    user.setUsersManager(null);
-            }
-        }
+//        calendarEventRepository.deleteByEventUser(tempUser);
         userRepository.deleteById(userID);
     }
 
